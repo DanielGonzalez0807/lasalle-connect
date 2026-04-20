@@ -27,10 +27,10 @@ npm install
 
 ### 3. Configurá las variables de entorno
 
-Copiá el archivo de ejemplo:
+Copiá el archivo de template:
 
 ```bash
-cp .env.example .env.local
+cp .env.template .env.local
 ```
 
 Abrí `.env.local` y pegá tus credenciales de Supabase:
