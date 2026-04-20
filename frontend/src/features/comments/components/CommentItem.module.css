@@ -1,0 +1,48 @@
+.item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.author {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.date {
+  font-size: 12px;
+  color: var(--color-muted);
+}
+
+.content {
+  font-size: 14px;
+  color: var(--color-text);
+  line-height: 1.55;
+  white-space: pre-wrap;
+}
+
+.btnReply {
+  font-size: 12px;
+  color: var(--color-primary);
+  font-weight: 500;
+  padding: 2px 0;
+  align-self: flex-start;
+}
+
+.btnReply:hover { text-decoration: underline; }
+
+.replies {
+  margin-top: 8px;
+  padding-left: 16px;
+  border-left: 2px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
