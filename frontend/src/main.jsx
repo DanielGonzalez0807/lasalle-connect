@@ -1,7 +1,15 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
+import { BrowserRouter } from 'react-router-dom'
+import { AuthProvider } from './app/AuthContext'
 import Router from './app/router'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <Router />
+  <React.StrictMode>
+    <BrowserRouter>
+      <AuthProvider>
+        <Router />
+      </AuthProvider>
+    </BrowserRouter>
+  </React.StrictMode>
 )
