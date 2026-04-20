@@ -1,12 +1,18 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom"
-import Home from "../pages/Home"
+import { Routes, Route, Navigate } from 'react-router-dom'
+import ProtectedRoute from './ProtectedRoute'
+import LoginPage from '../pages/LoginPage'
+import FeedPage from '../pages/FeedPage'
 
 export default function Router() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-      </Routes>
-    </BrowserRouter>
+    <Routes>
+      <Route path="/login" element={<LoginPage />} />
+
+      <Route element={<ProtectedRoute />}>
+        <Route path="/feed" element={<FeedPage />} />
+      </Route>
+
+      <Route path="*" element={<Navigate to="/login" replace />} />
+    </Routes>
   )
 }
