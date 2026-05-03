@@ -10,36 +10,72 @@ export default function PostCard({ post }) {
   const { count, userHasLiked, loading, toggle } = useReactions(post.id)
   const [showComments, setShowComments] = useState(false)
 
+  const initial = author?.nombre?.[0]?.toUpperCase() ?? '?'
+
   return (
-    <article className="space-y-5 rounded-3xl border-2 border-slate-200 bg-white p-6 shadow-lg hover:shadow-xl transition">
-      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-3">
-          <span className="text-2xl bg-lasalle-yellow/20 rounded-full w-10 h-10 flex items-center justify-center">👤</span>
-          <span className="text-sm font-semibold font-display text-lasalle-dark">{author?.nombre ?? 'Usuario'}</span>
+    <article style={{ background: '#fff', border: '1.5px solid #e2e8f0', borderRadius: '12px', padding: '20px', transition: 'box-shadow 0.2s' }}
+      onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 4px 16px rgba(30,58,138,0.08)'}
+      onMouseLeave={(e) => e.currentTarget.style.boxShadow = 'none'}
+    >
+      {/* Autor y fecha */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div style={{
+            width: '36px', height: '36px', borderRadius: '50%',
+            background: '#1e3a8a', color: '#fbbf24',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontSize: '14px', fontWeight: 700, fontFamily: 'Poppins, sans-serif', flexShrink: 0,
+          }}>
+            {initial}
+          </div>
+          <span style={{ fontSize: '14px', fontWeight: 600, fontFamily: 'Poppins, sans-serif', color: '#0f172a' }}>
+            {author?.nombre ?? 'Usuario'}
+          </span>
         </div>
-        <time className="text-sm text-slate-500" dateTime={post.created_at}>📅 {date}</time>
+        <time style={{ fontSize: '12px', color: '#94a3b8' }} dateTime={post.created_at}>{date}</time>
       </div>
 
-      <p className="whitespace-pre-wrap text-sm leading-7 text-slate-700 font-medium">{post.content}</p>
+      {/* Contenido */}
+      <p style={{ fontSize: '14px', lineHeight: 1.7, color: '#334155', whiteSpace: 'pre-wrap', margin: '0 0 16px' }}>
+        {post.content}
+      </p>
 
-      <div className="flex flex-wrap items-center gap-2 border-t-2 border-slate-100 pt-4">
-        <button
-          className={`inline-flex items-center gap-2 rounded-2xl border-2 px-4 py-2 text-sm font-semibold transition ${userHasLiked ? 'border-lasalle-yellow bg-lasalle-yellow/20 text-lasalle-dark' : 'border-slate-200 text-slate-600 hover:border-lasalle-yellow/50 hover:bg-slate-50'}`}
-          onClick={toggle}
-          disabled={loading}
+      {/* Acciones */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', paddingTop: '14px', borderTop: '1px solid #f1f5f9' }}>
+        <button onClick={toggle} disabled={loading}
+          style={{
+            display: 'flex', alignItems: 'center', gap: '6px',
+            padding: '6px 14px', borderRadius: '8px', border: 'none', cursor: loading ? 'not-allowed' : 'pointer',
+            background: userHasLiked ? '#fbbf24' : '#f1f5f9',
+            color: userHasLiked ? '#1e3a8a' : '#64748b',
+            fontSize: '13px', fontWeight: 600, transition: 'background 0.2s',
+          }}
+          onMouseEnter={(e) => { if (!loading) e.currentTarget.style.background = userHasLiked ? '#f59e0b' : '#e2e8f0' }}
+          onMouseLeave={(e) => { e.currentTarget.style.background = userHasLiked ? '#fbbf24' : '#f1f5f9' }}
         >
-          {userHasLiked ? '❤️' : '🤍'} {count > 0 && <span className="font-bold">{count}</span>}
+          {userHasLiked ? '❤️' : '🤍'}{count > 0 && <span>{count}</span>}
         </button>
 
-        <button
-          className={`inline-flex items-center gap-2 rounded-2xl border-2 px-4 py-2 text-sm font-semibold transition ${showComments ? 'border-lasalle-blue bg-lasalle-blue/20 text-lasalle-dark' : 'border-slate-200 text-slate-600 hover:border-lasalle-blue/50 hover:bg-slate-50'}`}
-          onClick={() => setShowComments((v) => !v)}
+        <button onClick={() => setShowComments((v) => !v)}
+          style={{
+            display: 'flex', alignItems: 'center', gap: '6px',
+            padding: '6px 14px', borderRadius: '8px', border: 'none', cursor: 'pointer',
+            background: showComments ? '#1e3a8a' : '#f1f5f9',
+            color: showComments ? '#fff' : '#64748b',
+            fontSize: '13px', fontWeight: 600, transition: 'background 0.2s',
+          }}
+          onMouseEnter={(e) => { e.currentTarget.style.background = showComments ? '#1e40af' : '#e2e8f0' }}
+          onMouseLeave={(e) => { e.currentTarget.style.background = showComments ? '#1e3a8a' : '#f1f5f9' }}
         >
           💬 {showComments ? 'Ocultar' : 'Comentarios'}
         </button>
       </div>
 
-      {showComments && <CommentList postId={post.id} />}
+      {showComments && (
+        <div style={{ marginTop: '16px' }}>
+          <CommentList postId={post.id} />
+        </div>
+      )}
     </article>
   )
 }

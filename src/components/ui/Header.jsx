@@ -1,18 +1,15 @@
 import { Link } from 'react-router-dom'
 
-export default function Header({ brand = 'LaSalle Connect', actions }) {
+export default function Header({ actions }) {
   return (
-    <header className="sticky top-0 z-20 bg-gradient-to-r from-lasalle-dark to-lasalle-blue shadow-lg">
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
-        <Link to="/home" className="flex items-center gap-2 text-2xl font-bold font-display text-white hover:text-lasalle-yellow transition">
-          <span>{brand}</span>
-          <span className="text-lasalle-yellow">.</span>
+    <header style={{ background: '#1e3a8a', position: 'sticky', top: 0, zIndex: 20, boxShadow: '0 1px 3px rgba(0,0,0,0.2)' }}>
+      <div style={{ maxWidth: '720px', margin: '0 auto', padding: '0 24px', height: '60px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Link to="/feed" style={{ textDecoration: 'none' }}>
+          <span style={{ fontSize: '20px', fontWeight: 700, fontFamily: 'Poppins, sans-serif', color: '#fff' }}>
+            LaSalle Connect<span style={{ color: '#fbbf24' }}>.</span>
+          </span>
         </Link>
-        {actions ? (
-          <div className="flex flex-wrap items-center gap-3 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-2xl">
-            {actions}
-          </div>
-        ) : null}
+        {actions && <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>{actions}</div>}
       </div>
     </header>
   )

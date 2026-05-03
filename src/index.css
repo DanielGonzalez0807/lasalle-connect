@@ -6,10 +6,6 @@
 
 :root {
   color-scheme: light;
-  --font-sans: 'Inter', system-ui, sans-serif;
-  --font-display: 'Poppins', system-ui, sans-serif;
-  background-color: #f8fafc;
-  color: #0f172a;
 }
 
 * {
@@ -23,8 +19,8 @@ html {
 body {
   min-height: 100vh;
   margin: 0;
-  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-  font-family: var(--font-sans);
+  font-family: 'Inter', system-ui, sans-serif;
+  color: #0f172a;
 }
 
 #root {
@@ -38,23 +34,6 @@ select {
   font: inherit;
 }
 
-input,
-textarea,
-select {
-  background: white;
-  border: 2px solid #e2e8f0;
-  border-radius: 1.25rem;
-  outline: none;
-  transition: all 0.2s ease;
-}
-
-input:focus,
-textarea:focus,
-select:focus {
-  border-color: #1e3a8a;
-  box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
-}
-
 textarea {
   resize: vertical;
 }
@@ -64,6 +43,6 @@ p {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-display);
+  font-family: 'Poppins', system-ui, sans-serif;
   font-weight: 700;
 }

@@ -2,7 +2,30 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../features/auth/hooks/useAuth'
 import { AUTH_CONFIG } from '../utils/constants'
-import { Button } from '../components/ui'
+
+const inputStyle = {
+  background: '#f8fafc',
+  border: '1.5px solid #e2e8f0',
+  borderRadius: '10px',
+  padding: '12px 16px',
+  fontSize: '14px',
+  color: '#0f172a',
+  outline: 'none',
+  width: '100%',
+  transition: 'border-color 0.2s, background 0.2s',
+}
+
+function Field({ label, id, error, children }) {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+      <label htmlFor={id} style={{ fontSize: '14px', fontWeight: 600, color: '#475569' }}>
+        {label}
+      </label>
+      {children}
+      {error && <p style={{ fontSize: '12px', color: '#dc2626', fontWeight: 500 }}>{error}</p>}
+    </div>
+  )
+}
 
 export default function RegisterPage() {
   const [email, setEmail] = useState('')
@@ -16,141 +39,132 @@ export default function RegisterPage() {
   const passwordMatch = password === confirmPassword && password.length >= 8
   const isFormValid = email && fullName && passwordMatch
 
+  const passwordError = password && !passwordMatch
+    ? (password.length < 8 ? 'Mínimo 8 caracteres' : 'Las contraseñas no coinciden')
+    : null
+
   async function handleSubmit(e) {
     e.preventDefault()
     const { error } = await register({ email, password, fullName })
     if (!error) navigate('/feed')
   }
 
+  function focusInput(e) { e.target.style.borderColor = '#1e3a8a'; e.target.style.background = '#fff' }
+  function blurInput(e) { e.target.style.borderColor = '#e2e8f0'; e.target.style.background = '#f8fafc' }
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-lasalle-white via-slate-50 to-slate-100 flex items-center justify-center px-4 py-8">
-      <div className="w-full max-w-md">
-        {/* Header */}
-        <div className="mb-8 text-center">
-          <h1 className="text-5xl font-bold font-display text-lasalle-dark mb-2">
-            LaSalle<span className="text-lasalle-yellow">.</span>
-          </h1>
-          <p className="text-slate-600 text-lg font-medium">Crea tu cuenta</p>
-          <p className="text-slate-500 text-sm mt-1">
-            Únete a nuestra comunidad educativa
+    <div style={{ minHeight: '100vh', display: 'flex' }}>
+
+      {/* Panel izquierdo */}
+      <div style={{ display: 'none', width: '50%', background: '#1e3a8a', flexDirection: 'column', justifyContent: 'space-between', padding: '56px', position: 'relative', overflow: 'hidden' }}
+        className="lg:flex">
+        <div style={{ position: 'absolute', top: 0, right: 0, width: '288px', height: '288px', borderRadius: '50%', background: 'rgba(255,255,255,0.05)', transform: 'translate(33%, -33%)' }} />
+        <div style={{ position: 'absolute', bottom: 0, left: 0, width: '384px', height: '384px', borderRadius: '50%', background: 'rgba(251,191,36,0.08)', transform: 'translate(-33%, 33%)' }} />
+
+        <div style={{ position: 'relative', zIndex: 1 }}>
+          <p style={{ color: '#fff', fontSize: '22px', fontWeight: 700, fontFamily: 'Poppins, sans-serif', margin: 0 }}>
+            LaSalle Connect<span style={{ color: '#fbbf24' }}>.</span>
           </p>
         </div>
 
-        {/* Card */}
-        <div className="bg-white rounded-3xl shadow-lg p-8 space-y-6">
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Full Name */}
-            <div>
-              <label htmlFor="fullName" className="block text-sm font-medium text-slate-700 mb-2">
-                Nombre Completo
-              </label>
-              <input
-                id="fullName"
-                type="text"
-                placeholder="Juan Pérez García"
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
-                required
-                className="w-full px-5 py-3.5 bg-slate-50 border-2 border-slate-200 rounded-2xl text-slate-900 placeholder-slate-400 focus:border-lasalle-dark focus:bg-white transition"
-              />
-            </div>
+        <div style={{ position: 'relative', zIndex: 1 }}>
+          <div style={{ width: '48px', height: '4px', background: '#fbbf24', borderRadius: '2px', marginBottom: '24px' }} />
+          <h2 style={{ color: '#fff', fontSize: '36px', fontWeight: 700, fontFamily: 'Poppins, sans-serif', lineHeight: 1.3, margin: '0 0 16px' }}>
+            Únete a la<br />comunidad<br />académica
+          </h2>
+          <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: '14px', lineHeight: 1.7, maxWidth: '280px', margin: 0 }}>
+            Registrate con tu correo institucional y empezá a conectar con tus compañeros.
+          </p>
+        </div>
 
-            {/* Email */}
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-2">
-                Correo Institucional
-              </label>
-              <input
-                id="email"
-                type="email"
-                placeholder={`correo@${AUTH_CONFIG.allowedDomain}`}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="w-full px-5 py-3.5 bg-slate-50 border-2 border-slate-200 rounded-2xl text-slate-900 placeholder-slate-400 focus:border-lasalle-dark focus:bg-white transition"
-              />
-            </div>
+        <p style={{ position: 'relative', zIndex: 1, color: 'rgba(255,255,255,0.2)', fontSize: '12px', margin: 0 }}>
+          © {new Date().getFullYear()} LaSalle Connect
+        </p>
+      </div>
 
-            {/* Password */}
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-slate-700 mb-2">
-                Contraseña
-              </label>
-              <input
-                id="password"
-                type="password"
-                placeholder="Mínimo 8 caracteres"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className="w-full px-5 py-3.5 bg-slate-50 border-2 border-slate-200 rounded-2xl text-slate-900 placeholder-slate-400 focus:border-lasalle-dark focus:bg-white transition"
-              />
-            </div>
+      {/* Panel derecho */}
+      <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#fff', padding: '48px 32px' }}>
+        <div style={{ width: '100%', maxWidth: '360px' }}>
 
-            {/* Confirm Password */}
-            <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-slate-700 mb-2">
-                Confirmar Contraseña
-              </label>
-              <input
-                id="confirmPassword"
-                type="password"
-                placeholder="Repite tu contraseña"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                required
-                className={`w-full px-5 py-3.5 bg-slate-50 border-2 rounded-2xl text-slate-900 placeholder-slate-400 transition ${
-                  password && !passwordMatch
-                    ? 'border-danger'
-                    : 'border-slate-200 focus:border-lasalle-dark focus:bg-white'
-                }`}
-              />
-              {password && !passwordMatch && (
-                <p className="text-sm text-danger mt-1 font-medium">
-                  {password.length < 8
-                    ? 'La contraseña debe tener al menos 8 caracteres'
-                    : 'Las contraseñas no coinciden'}
-                </p>
-              )}
-            </div>
+          {/* Logo mobile */}
+          <p className="lg:hidden" style={{ textAlign: 'center', fontSize: '22px', fontWeight: 700, fontFamily: 'Poppins, sans-serif', color: '#1e3a8a', marginBottom: '40px' }}>
+            LaSalle<span style={{ color: '#fbbf24' }}>.</span>
+          </p>
 
-            {/* Error */}
+          <h1 style={{ fontSize: '24px', fontWeight: 700, fontFamily: 'Poppins, sans-serif', color: '#0f172a', margin: '0 0 4px' }}>
+            Crear cuenta
+          </h1>
+          <p style={{ fontSize: '14px', color: '#94a3b8', margin: '0 0 32px' }}>Completá tus datos para registrarte</p>
+
+          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '22px' }}>
+            <Field label="Nombre completo" id="fullName">
+              <input id="fullName" type="text" placeholder="Juan Pérez García" value={fullName}
+                onChange={(e) => setFullName(e.target.value)} required
+                style={inputStyle} onFocus={focusInput} onBlur={blurInput} />
+            </Field>
+
+            <Field label="Correo institucional" id="email">
+              <input id="email" type="email" placeholder={`correo@${AUTH_CONFIG.allowedDomain}`} value={email}
+                onChange={(e) => setEmail(e.target.value)} required
+                style={inputStyle} onFocus={focusInput} onBlur={blurInput} />
+            </Field>
+
+            <Field label="Contraseña" id="password">
+              <input id="password" type="password" placeholder="Mínimo 8 caracteres" value={password}
+                onChange={(e) => setPassword(e.target.value)} required
+                style={inputStyle} onFocus={focusInput} onBlur={blurInput} />
+            </Field>
+
+            <Field label="Confirmar contraseña" id="confirmPassword" error={passwordError}>
+              <input id="confirmPassword" type="password" placeholder="Repite tu contraseña" value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)} required
+                style={{ ...inputStyle, borderColor: passwordError ? '#dc2626' : '#e2e8f0' }}
+                onFocus={(e) => { e.target.style.borderColor = passwordError ? '#dc2626' : '#1e3a8a'; e.target.style.background = '#fff' }}
+                onBlur={(e) => { e.target.style.borderColor = passwordError ? '#dc2626' : '#e2e8f0'; e.target.style.background = '#f8fafc' }} />
+            </Field>
+
             {error && (
-              <div className="p-4 bg-red-50 border-2 border-red-200 rounded-2xl">
-                <p className="text-sm text-red-700 font-medium">{error}</p>
+              <div style={{ background: '#fef2f2', border: '1px solid #fecaca', borderRadius: '10px', padding: '10px 14px' }}>
+                <p style={{ fontSize: '12px', color: '#dc2626', fontWeight: 500, margin: 0 }}>{error}</p>
               </div>
             )}
 
-            {/* Submit Button */}
-            <Button
-              className="w-full mt-6 py-3.5 text-lg font-semibold"
-              type="submit"
-              disabled={loading || !isFormValid}
+            <button type="submit" disabled={loading || !isFormValid}
+              style={{
+                width: '100%', padding: '13px', borderRadius: '10px', border: 'none',
+                background: loading || !isFormValid ? '#e2e8f0' : '#fbbf24',
+                color: loading || !isFormValid ? '#94a3b8' : '#1e3a8a',
+                fontSize: '14px', fontWeight: 700, fontFamily: 'Poppins, sans-serif',
+                cursor: loading || !isFormValid ? 'not-allowed' : 'pointer', transition: 'background 0.2s',
+              }}
+              onMouseEnter={(e) => { if (!loading && isFormValid) e.target.style.background = '#f59e0b' }}
+              onMouseLeave={(e) => { if (!loading && isFormValid) e.target.style.background = '#fbbf24' }}
             >
-              {loading ? 'Registrando...' : 'Crear Cuenta'}
-            </Button>
+              {loading ? 'Registrando...' : 'Crear cuenta'}
+            </button>
           </form>
 
-          {/* Divider */}
-          <div className="relative py-2">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t-2 border-slate-200"></div>
-            </div>
-            <div className="relative flex justify-center text-sm">
-              <span className="px-3 bg-white text-slate-500 font-medium">o</span>
-            </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', margin: '24px 0' }}>
+            <div style={{ flex: 1, height: '1px', background: '#e2e8f0' }} />
+            <span style={{ fontSize: '12px', color: '#94a3b8' }}>o</span>
+            <div style={{ flex: 1, height: '1px', background: '#e2e8f0' }} />
           </div>
 
-          {/* Login Link */}
-          <p className="text-center text-slate-600">
-            ¿Ya tienes cuenta?{' '}
-            <button
-              type="button"
-              onClick={() => navigate('/login')}
-              className="font-semibold text-lasalle-dark hover:text-lasalle-blue transition"
-            >
-              Inicia sesión
-            </button>
+          <button type="button" onClick={() => navigate('/login')}
+            style={{
+              width: '100%', padding: '13px', borderRadius: '10px',
+              background: 'transparent', color: '#1e3a8a',
+              border: '1.5px solid #1e3a8a', fontSize: '14px', fontWeight: 700,
+              fontFamily: 'Poppins, sans-serif', cursor: 'pointer', transition: 'all 0.2s',
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.background = '#1e3a8a'; e.currentTarget.style.color = '#fff' }}
+            onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#1e3a8a' }}
+          >
+            Ya tengo cuenta
+          </button>
+
+          <p style={{ textAlign: 'center', fontSize: '11px', color: '#cbd5e1', marginTop: '32px' }}>
+            Solo para miembros de la comunidad LaSalle
           </p>
         </div>
       </div>

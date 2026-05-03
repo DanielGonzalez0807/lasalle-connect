@@ -8,6 +8,7 @@ export default function CommentItem({ comment, postId, onNewComment, depth = 0 }
   const date = new Date(comment.created_at).toLocaleDateString('es-CO', {
     year: 'numeric', month: 'short', day: 'numeric',
   })
+  const initial = author?.nombre?.[0]?.toUpperCase() ?? '?'
 
   function handleReplySuccess(newComment) {
     onNewComment(newComment)
@@ -15,45 +16,45 @@ export default function CommentItem({ comment, postId, onNewComment, depth = 0 }
   }
 
   return (
-    <div className={`space-y-3 ${depth > 0 ? 'border-l-4 border-lasalle-yellow pl-4' : ''}`}>
-      <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-2">
-          <span className="text-lg">👤</span>
-          <span className="text-sm font-semibold font-display text-lasalle-dark">{author?.nombre ?? 'Usuario'}</span>
+    <div style={{ paddingLeft: depth > 0 ? '16px' : 0, borderLeft: depth > 0 ? '3px solid #fbbf24' : 'none' }}>
+      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', marginBottom: '8px' }}>
+        <div style={{
+          width: '30px', height: '30px', borderRadius: '50%', flexShrink: 0,
+          background: '#1e3a8a', color: '#fbbf24',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          fontSize: '12px', fontWeight: 700, fontFamily: 'Poppins, sans-serif',
+        }}>
+          {initial}
         </div>
-        <time className="text-xs text-slate-500" dateTime={comment.created_at}>📅 {date}</time>
+        <div style={{ flex: 1 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+            <span style={{ fontSize: '13px', fontWeight: 600, fontFamily: 'Poppins, sans-serif', color: '#0f172a' }}>
+              {author?.nombre ?? 'Usuario'}
+            </span>
+            <time style={{ fontSize: '11px', color: '#94a3b8' }} dateTime={comment.created_at}>{date}</time>
+          </div>
+          <p style={{ fontSize: '13px', lineHeight: 1.6, color: '#475569', margin: '0 0 8px', whiteSpace: 'pre-wrap' }}>
+            {comment.content}
+          </p>
+          {depth < 3 && (
+            <button onClick={() => setShowReplyForm((v) => !v)}
+              style={{ fontSize: '12px', fontWeight: 600, color: '#1e3a8a', background: 'none', border: 'none', cursor: 'pointer', padding: 0, fontFamily: 'Poppins, sans-serif' }}>
+              {showReplyForm ? 'Cancelar' : '↩ Responder'}
+            </button>
+          )}
+        </div>
       </div>
 
-      <p className="whitespace-pre-wrap text-sm leading-6 text-slate-700">{comment.content}</p>
-
-      {depth < 3 && (
-        <button
-          className="text-sm font-semibold text-lasalle-dark hover:text-lasalle-blue underline transition"
-          onClick={() => setShowReplyForm((v) => !v)}
-        >
-          {showReplyForm ? 'Cancelar' : '↩️ Responder'}
-        </button>
-      )}
-
       {showReplyForm && (
-        <CommentForm
-          postId={postId}
-          parentId={comment.id}
-          onSuccess={handleReplySuccess}
-          onCancel={() => setShowReplyForm(false)}
-        />
+        <div style={{ marginLeft: '40px', marginBottom: '12px' }}>
+          <CommentForm postId={postId} parentId={comment.id} onSuccess={handleReplySuccess} onCancel={() => setShowReplyForm(false)} />
+        </div>
       )}
 
       {comment.replies.length > 0 && (
-        <div className="space-y-4">
+        <div style={{ marginLeft: '40px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
           {comment.replies.map((reply) => (
-            <CommentItem
-              key={reply.id}
-              comment={reply}
-              postId={postId}
-              onNewComment={onNewComment}
-              depth={depth + 1}
-            />
+            <CommentItem key={reply.id} comment={reply} postId={postId} onNewComment={onNewComment} depth={depth + 1} />
           ))}
         </div>
       )}

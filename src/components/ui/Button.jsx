@@ -1,6 +1,6 @@
 const variantClasses = {
-  primary: 'bg-gradient-to-r from-lasalle-dark to-lasalle-blue text-white border border-transparent hover:shadow-lg hover:from-lasalle-blue hover:to-lasalle-light-blue focus-visible:ring-2 focus-visible:ring-lasalle-yellow focus-visible:ring-offset-2',
-  secondary: 'bg-white text-lasalle-dark border-2 border-lasalle-dark hover:bg-slate-50 focus-visible:ring-2 focus-visible:ring-lasalle-yellow',
+  primary: 'bg-lasalle-yellow text-lasalle-dark border border-transparent hover:bg-yellow-400 hover:shadow-lg focus-visible:ring-2 focus-visible:ring-lasalle-yellow focus-visible:ring-offset-2',
+  secondary: 'bg-lasalle-dark text-white border border-transparent hover:bg-lasalle-blue hover:shadow-lg focus-visible:ring-2 focus-visible:ring-lasalle-dark focus-visible:ring-offset-2',
   danger: 'bg-red-500 text-white border border-transparent hover:bg-red-600 focus-visible:ring-2 focus-visible:ring-red-300',
   ghost: 'bg-transparent text-lasalle-dark border-2 border-slate-300 hover:bg-slate-100 focus-visible:ring-2 focus-visible:ring-lasalle-yellow',
   outline: 'bg-white text-lasalle-dark border-2 border-lasalle-yellow hover:bg-lasalle-yellow/10 focus-visible:ring-2 focus-visible:ring-lasalle-yellow',
