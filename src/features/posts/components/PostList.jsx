@@ -1,6 +1,6 @@
 import PostCard from './PostCard'
 
-export default function PostList({ posts, loading, error }) {
+export default function PostList({ posts, loading, error, subjectSelected = false, onSelectSubject }) {
   if (loading) return (
     <p style={{ fontSize: '14px', color: '#94a3b8', textAlign: 'center', padding: '32px 0' }}>
       Cargando publicaciones...
@@ -19,7 +19,7 @@ export default function PostList({ posts, loading, error }) {
     <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '12px' }}>
       {posts.map((post) => (
         <li key={post.id}>
-          <PostCard post={post} />
+          <PostCard post={post} subjectSelected={subjectSelected} onSelectSubject={onSelectSubject} />
         </li>
       ))}
     </ul>

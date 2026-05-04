@@ -12,6 +12,11 @@ export async function fetchPosts(subjectId = null) {
       profiles!author_id (
         id,
         nombre
+      ),
+      subjects (
+        id,
+        name,
+        code
       )
     `)
     .order('created_at', { ascending: false })
