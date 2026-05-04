@@ -33,7 +33,7 @@ export default function CommentItem({ comment, postId, onNewComment, depth = 0 }
             </span>
             <time style={{ fontSize: '11px', color: '#94a3b8' }} dateTime={comment.created_at}>{date}</time>
           </div>
-          <p style={{ fontSize: '13px', lineHeight: 1.6, color: '#475569', margin: '0 0 8px', whiteSpace: 'pre-wrap' }}>
+          <p style={{ fontSize: '13px', lineHeight: 1.6, color: '#475569', margin: '0 0 8px', whiteSpace: 'pre-wrap', wordBreak: 'break-word', overflowWrap: 'break-word' }}>
             {comment.content}
           </p>
           {depth < 3 && (

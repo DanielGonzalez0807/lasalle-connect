@@ -51,7 +51,7 @@ export default function PostCard({ post, subjectSelected = false, onSelectSubjec
       </div>
 
       {/* Contenido */}
-      <p style={{ fontSize: '14px', lineHeight: 1.7, color: '#334155', whiteSpace: 'pre-wrap', margin: '0 0 16px' }}>
+      <p style={{ fontSize: '14px', lineHeight: 1.7, color: '#334155', whiteSpace: 'pre-wrap', wordBreak: 'break-word', overflowWrap: 'break-word', margin: '0 0 16px' }}>
         {post.content}
       </p>
 
